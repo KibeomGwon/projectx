@@ -17,7 +17,7 @@ public class ApplicantsPageDTO {
     public String description;
     public String photo;
     public String position;
-    public String endTime;
+    public String deadline;
 
     public List<Member> applicants;
     public ApplicantsPageDTO(Article article, List<Member> memberList) {
@@ -27,7 +27,7 @@ public class ApplicantsPageDTO {
         this.description = article.getDescription();
         this.photo = article.getImage();
         this.position = article.getPosition();
-        this.endTime = article.getEndTime();
+        this.deadline = article.getDeadline();
         applicants = memberList;
     }
 }

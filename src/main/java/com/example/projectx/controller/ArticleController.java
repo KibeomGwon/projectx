@@ -34,7 +34,7 @@ public class ArticleController {
     public Article create(@RequestPart(value = "title") String title,
                           @RequestPart(value = "description") String description,
                           @RequestPart(value = "position") String position,
-                          @RequestPart(value = "endTime") String endTime,
+                          @RequestPart(value = "deadline") String deadline,
                           @RequestPart(value = "name") String name,
                           @RequestPart(value = "phoneNumber") String phoneNumber,
                           @RequestPart(value = "image") MultipartFile image
@@ -42,7 +42,7 @@ public class ArticleController {
         CreateArticleDTO dto = CreateArticleDTO.builder().title(title)
                 .description(description)
                 .position(position)
-                .endTime(endTime)
+                .deadline(deadline)
                 .name(name)
                 .phoneNumber(phoneNumber).build();
 

@@ -12,16 +12,16 @@ public class CreateArticleDTO {
     private String title;
     private String description;
     private String position;
-    private String endTime;
+    private String deadline;
     private String name;
     private String phoneNumber;
     @Builder
-    public CreateArticleDTO(String title, String description, String position, String endTime,
+    public CreateArticleDTO(String title, String description, String position, String deadline,
                             String name, String phoneNumber) {
         this.title = title;
         this.description = description;
         this.position = position;
-        this.endTime = endTime;
+        this.deadline = deadline;
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
@@ -32,7 +32,7 @@ public class CreateArticleDTO {
         article.setImage(photo);
         article.setTitle(this.title);
         article.setPosition(this.position);
-        article.setEndTime(this.endTime);
+        article.setDeadline(this.deadline);
         article.setWriter(member);
         return article;
     }

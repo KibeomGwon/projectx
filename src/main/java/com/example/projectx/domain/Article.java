@@ -25,7 +25,7 @@ public class Article {
     private String description;
     private String image;
     private String position;
-    private String endTime;
+    private String deadline;
 
     @ElementCollection @Nullable
     private List<Long> applicants;
