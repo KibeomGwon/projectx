@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상세 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .details {
+            margin-bottom: 20px;
+        }
+
+        .details label {
+            font-weight: bold;
+        }
+
+        .details div {
+            margin-bottom: 10px;
+        }
+
+        .details .label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        .details .content {
+            display: inline-block;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .image {
+            width: 300px;
+            height: 200px;
+            background-color: #ddd;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .apply-form {
+            margin-top: 20px;
+        }
+
+        .apply-form div {
+            margin-bottom: 10px;
+        }
+
+        .apply-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .apply-form input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+        function showPhoneNumber() {
+            var phoneNumber = document.getElementById("phoneNumber");
+            phoneNumber.style.display = "inline";
+            var button = document.getElementById("showButton");
+            button.style.display = "none";
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>상세 페이지</h1>
+    </header>
+    <div class="details">
+        <div>
+            <label class="label">제목:</label>
+            <span class="content" th:text="${article.title}">제목 예시</span>
+        </div>
+        <div>
+            <label class="label">전화번호:</label>
+            <span id="phoneNumber" class="content" th:text="${article.phoneNumber}" style="display: none;">010-1234-5678</span>
+            <button id="showButton" type="button" onclick="showPhoneNumber()">전화번호 확인</button>
+        </div>
+        <div>
+            <label class="label">작성자:</label>
+            <span class="content" th:text="${article.name}">홍길동</span>
+        </div>
+        <div>
+            <label class="label">마감일:</label>
+            <span class="content" th:text="${article.deadline}">2024-12-31</span>
+        </div>
+        <div>
+            <label class="label">위치:</label>
+            <span class="content" th:text="${article.position}">서울</span>
+        </div>
+        <div>
+            <label class="label">소개글:</label>
+            <span class="content" th:text="${article.description}">소개글 예시</span>
+        </div>
+        <div>
+            <img class="image" th:src="@{${article.imageUrl}}" alt="이미지">
+        </div>
+    </div>
+    <div class="apply-form">
+        <p><h3 style="background-color: lightskyblue">신청하기</h3></p>
+        <form th:action="@{/apply}" method="post">
+            <div>
+                <label for="applyName">이름:</label>
+                <input type="text" id="applyName" name="applyName" required>
+            </div>
+            <div>
+                <label for="applyPhoneNumber">전화번호:</label>
+                <input type="tel" id="applyPhoneNumber" name="applyPhoneNumber" required>
+            </div>
+            <div class="actions">
+                <button type="submit">신청하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
