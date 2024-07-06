@@ -5,13 +5,14 @@ import com.example.projectx.domain.Member;
 import com.example.projectx.service.*;
 import com.example.projectx.dto.CreateArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -38,13 +39,13 @@ public class ArticleController {
     public String findById(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", article);
-        return "detail";
+        return "getPost";
     }
 
     //게시물 생성 페이지로 이동
     @GetMapping("/new")
     public String showCreateForm() {
-        return "createArticle"; // createArticle.html로 이동
+        return "newPost"; // createArticle.html로 이동
     }
 
     // 게시물 생성-=> 백엔드 로직
@@ -78,11 +79,11 @@ public class ArticleController {
     public String showUpdateForm(@PathVariable Long id, Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", article);
-        return "updateArticle"; // updateArticle.html로 이동
+        return "updatePost"; // updateArticle.html로 이동
     }
 
     // 게시물 업데이트 => 백엔드 로직
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public String update(@PathVariable Long id,
                          @RequestPart(value = "title") String title,
                          @RequestPart(value = "description") String description,
@@ -112,8 +113,9 @@ public class ArticleController {
 
     // 게시물 삭제.
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long id) {
         articleService.deleteById(id);
+        return "redirect:/";
     }
 
 }
