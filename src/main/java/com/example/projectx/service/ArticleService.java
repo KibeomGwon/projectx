@@ -44,4 +44,8 @@ public class ArticleService {
 
         return articleRepository.save(article);
     }
+
+    public void deleteById(Long id) {
+        articleRepository.findById(id).ifPresent(articleRepository::delete);
+    }
 }
