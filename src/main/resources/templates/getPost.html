@@ -102,6 +102,7 @@
             box-sizing: border-box;
         }
     </style>
+
     <script>
         function showPhoneNumber() {
             var phoneNumber = document.getElementById("phoneNumber");
@@ -109,6 +110,9 @@
             var button = document.getElementById("showButton");
             button.style.display = "none";
         }
+
+
+
     </script>
 </head>
 <body>
@@ -155,7 +159,7 @@
             </div>
             <div>
                 <label for="applyPhoneNumber">전화번호:</label>
-                <input type="tel" id="applyPhoneNumber" name="applyPhoneNumber" required>
+                <input type="text" id="applyPhoneNumber" name="applyPhoneNumber" required>
             </div>
             <div class="actions">
                 <button type="submit">신청하기</button>

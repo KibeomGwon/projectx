@@ -30,7 +30,7 @@ public class S3ImageService {
     private String bucket;
 
     // 파일 삭제
-    public void deleteFile(String fileUrl) {
+    public void deleteFile(String fileUrl) throws Exception{
         String[] urlParts = fileUrl.split("/");
         String fileBucket = urlParts[2].split("\\.")[0];
 
@@ -58,7 +58,7 @@ public class S3ImageService {
     }
 
     // 단일 파일 저장
-    public String saveFile(MultipartFile file) {
+    public String saveFile(MultipartFile file) throws Exception{
         String randomFilename = generateRandomFilename(file);
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -80,28 +80,8 @@ public class S3ImageService {
         return amazonS3.getUrl(bucket, randomFilename).toString();
     }
 
-    // 요청에 중복되는 파일 여부 확인
-    private boolean isDuplicate(MultipartFile multipartFile) {
-        String fileName = multipartFile.getOriginalFilename();
-        Long fileSize = multipartFile.getSize();
-
-        if (uploadedFileNames.contains(fileName) && uploadedFileSizes.contains(fileSize)) {
-            return true;
-        }
-
-        uploadedFileNames.add(fileName);
-        uploadedFileSizes.add(fileSize);
-
-        return false;
-    }
-
-    private void clear() {
-        uploadedFileNames.clear();
-        uploadedFileSizes.clear();
-    }
-
     // 랜덤파일명 생성 (파일명 중복 방지)
-    private String generateRandomFilename(MultipartFile multipartFile) {
+    private String generateRandomFilename(MultipartFile multipartFile) throws Exception{
         String originalFilename = multipartFile.getOriginalFilename();
         String fileExtension = validateFileExtension(originalFilename);
         String randomFilename = UUID.randomUUID() + "." + fileExtension;
@@ -109,7 +89,7 @@ public class S3ImageService {
     }
 
     // 파일 확장자 체크
-    private String validateFileExtension(String originalFilename) {
+    private String validateFileExtension(String originalFilename) throws Exception{
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
         List<String> allowedExtensions = Arrays.asList("jpg", "png", "gif", "jpeg");
 
