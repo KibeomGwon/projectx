@@ -66,7 +66,7 @@ public class ApplyController {
         Article article = articleService.findById(id).orElseThrow();
 
         if(!article.getWriter().getPhoneNumber().equals(phoneNumber))
-            throw new IllegalStateException("작성자 정보와 일치하지 않습니다.");
+            return "redirect:/" + id.toString();
 
         return "redirect:/" + id.toString() + "/get-applicants";
     }

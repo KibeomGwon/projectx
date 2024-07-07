@@ -22,7 +22,6 @@ public class MemberService {
     }
 
     public Member save(Member member) {
-        validationCheck(member);
         return memberRepository.save(member);
     }
 
@@ -30,9 +29,4 @@ public class MemberService {
         return memberRepository.findByPhoneNumber(phoneNumber);
     }
 
-    private void validationCheck(Member member) {
-        memberRepository.findByPhoneNumber(member.getPhoneNumber()).ifPresent(m-> {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        });
-    }
 }
