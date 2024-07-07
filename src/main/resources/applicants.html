@@ -1,0 +1,96 @@
+<!--  신청자 리스트 -> 내부 삽입될 내용  -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>신청자 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            text-decoration: none;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>신청자 목록</h1>
+    </header>
+    <table>
+        <thead>
+        <tr>
+            <th>이름</th>
+            <th>전화번호</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="applicant : ${applicants}">
+            <td th:text="${applicant.name}">홍길동</td>
+            <td th:text="${applicant.phoneNumber}">010-1234-5678</td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/details/{id}(id=${articleId})}"><button>뒤로가기</button></a>
+</div>
+</body>
+</html>
