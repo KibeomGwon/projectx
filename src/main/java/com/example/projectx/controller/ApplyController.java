@@ -52,6 +52,15 @@ public class ApplyController {
         return "redirect:/" + id.toString();
     }
 
+    @GetMapping("/{id}/get-applicants-page")
+    public String getApplicants(@PathVariable("id") Long id, Model model) {
+        Article article = articleService.findById(id).orElseThrow();
+
+        model.addAttribute("article", article);
+
+        return "getApplicantPost";
+    }
+
     @PostMapping("/{id}/get-applicants")
     public String getApplicants(@PathVariable("id") Long id, @RequestParam(value = "phoneNumber") String phoneNumber) {
         Article article = articleService.findById(id).orElseThrow();
@@ -71,6 +80,6 @@ public class ApplyController {
         model.addAttribute("article", article);
         model.addAttribute("applicants", applicants);
 
-        return "applicantsPost";
+        return "applicants";
     }
 }

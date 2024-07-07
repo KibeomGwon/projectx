@@ -150,6 +150,7 @@
             <img class="image" th:src="@{${article.image}}" alt="이미지">
         </div>
     </div>
+    <a th:href="@{/{id}/get-applicants-page(id=${article.Id})}"><button>신청자 확인하기</button></a>
     <div class="apply-form">
         <p><h3 style="background-color: lightskyblue">신청하기</h3></p>
         <form th:action="@{/{id}/apply(id=${article.id})}" method="post">
@@ -166,6 +167,7 @@
             </div>
         </form>
     </div>
+    <a th:href="@{/}"><button>뒤로가기</button></a>
 </div>
 </body>
 </html>
