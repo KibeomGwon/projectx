@@ -2,8 +2,11 @@ package com.example.projectx.controller;
 
 import com.example.projectx.domain.Article;
 import com.example.projectx.domain.Member;
+import com.example.projectx.dto.MessageDTO;
 import com.example.projectx.service.*;
 import com.example.projectx.dto.CreateArticleDTO;
+import jakarta.annotation.Nullable;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -36,7 +40,8 @@ public class ArticleController {
 
     // 게시물 상세 조회.
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id,
+                           Model model) {
         Article article = articleService.findById(id).orElseThrow();
         model.addAttribute("article", article);
         return "getPost";
@@ -67,11 +72,17 @@ public class ArticleController {
 
         Member member = memberService.findByPhoneNumber(dto.toMemberEntity().getPhoneNumber())
                 .orElseGet(() -> memberService.save(dto.toMemberEntity()));
-        String imageUrl = imageService.saveFile(image);
-        Article article = articleService.save(dto.toArticleEntity(imageUrl, member));
 
-        model.addAttribute("article", article);
-        return "redirect:/"; // 생성 후 메인 페이지로 리디렉션
+        try{
+            String imageUrl = imageService.saveFile(image);
+            Article article = articleService.save(dto.toArticleEntity(imageUrl, member));
+            model.addAttribute("article", article);
+            return "redirect:/"; // 생성 후 메인 페이지로 리디렉션
+
+        } catch (Exception e) {
+            return "redirect:/";
+        }
+
     }
 
     //게시물 업데이트 -> 프론트엔드
@@ -100,15 +111,19 @@ public class ArticleController {
         target.setDeadline(deadline);
         target.getWriter().setName(name);
         target.getWriter().setPhoneNumber(phoneNumber);
+        try{
+            if (image != null && !image.isEmpty()) {
+                String imageUrl = imageService.saveFile(image);
+                target.setImage(imageUrl);
+            }
 
-        if (image != null && !image.isEmpty()) {
-            String imageUrl = imageService.saveFile(image);
-            target.setImage(imageUrl);
+            Article updatedArticle = articleService.save(target);
+            model.addAttribute("article", updatedArticle);
+            return "redirect:/"; // 업데이트 후 메인 페이지로 리디렉션
+        }catch (Exception e) {
+            return "redirect:/";
         }
 
-        Article updatedArticle = articleService.save(target);
-        model.addAttribute("article", updatedArticle);
-        return "redirect:/"; // 업데이트 후 메인 페이지로 리디렉션
     }
 
     // 게시물 삭제.

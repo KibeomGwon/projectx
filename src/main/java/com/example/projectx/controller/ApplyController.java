@@ -4,11 +4,14 @@ import com.example.projectx.domain.Article;
 import com.example.projectx.domain.Member;
 import com.example.projectx.dto.ApplicantsPageDTO;
 import com.example.projectx.dto.MemberDTO;
+import com.example.projectx.dto.MessageDTO;
 import com.example.projectx.service.ArticleService;
 import com.example.projectx.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +28,31 @@ public class ApplyController {
     }
 
     @PostMapping("/{id}/apply")
-    public String apply(@PathVariable("id") Long id, @RequestBody MemberDTO memberDTO) {
-        Article article = articleService.findById(id).orElseThrow();
-        Member member = memberService.findByPhoneNumber(memberDTO.toEntity().getPhoneNumber())
-                .orElseGet(()-> memberService.save(memberDTO.toEntity()));
+    public String apply(@PathVariable("id") Long id,
+                         @RequestParam(value = "applyName") String name,
+                         @RequestParam(value = "applyPhoneNumber") String phoneNumber
+    ) {
 
-        articleService.apply(article, member);
+        MemberDTO dto = MemberDTO.builder()
+                .name(name)
+                .phoneNumber(phoneNumber).build();
+
+        Article article = articleService.findById(id).orElseThrow(RuntimeException::new);
+
+
+        Member member = memberService.findByPhoneNumber(dto.getPhoneNumber())
+                .orElseGet(()-> memberService.save(dto.toEntity()));
+
+        try{
+            articleService.apply(article, member);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         return "redirect:/" + id.toString();
     }
 
+    @ResponseBody
     @PostMapping("/{id}/get-applicants")
     public ApplicantsPageDTO getApplicants(@PathVariable("id") Long id, @RequestBody MemberDTO memberDTO) {
         Article article = articleService.findById(id).orElseThrow();
