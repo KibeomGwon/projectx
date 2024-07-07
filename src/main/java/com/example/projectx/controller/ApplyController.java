@@ -52,22 +52,25 @@ public class ApplyController {
         return "redirect:/" + id.toString();
     }
 
-    @ResponseBody
     @PostMapping("/{id}/get-applicants")
-    public ApplicantsPageDTO getApplicants(@PathVariable("id") Long id, @RequestBody MemberDTO memberDTO) {
+    public String getApplicants(@PathVariable("id") Long id, @RequestParam(value = "phoneNumber") String phoneNumber) {
         Article article = articleService.findById(id).orElseThrow();
 
-        if(!article.getWriter().getPhoneNumber().equals(memberDTO.getPhoneNumber()))
+        if(!article.getWriter().getPhoneNumber().equals(phoneNumber))
             throw new IllegalStateException("작성자 정보와 일치하지 않습니다.");
 
-        List<Member> applicantsInfor = new ArrayList<>();
+        return "redirect:/" + id.toString() + "/get-applicants";
+    }
 
-        if(article.getApplicants() != null && !article.getApplicants().isEmpty()) {
-            for(Long memberId : article.getApplicants()) {
-                applicantsInfor.add(memberService.findById(memberId).get());
-            }
-        }
+    @GetMapping("/{id}/get-applicants")
+    public String getApplicantsPage(@PathVariable("id") Long id, Model model) {
+        Article article = articleService.findById(id).orElseThrow();
 
-        return new ApplicantsPageDTO(article, applicantsInfor);
+        List<Member> applicants = articleService.getApplicants(article);
+
+        model.addAttribute("article", article);
+        model.addAttribute("applicants", applicants);
+
+        return "applicantsPost";
     }
 }
